@@ -59,7 +59,33 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  const keyToAudioMap = new Map();
+  const keyToButtonMap = new Map();
+  const playCode = function(keyCode) {
+    const audio = keyToAudioMap[keyCode];
+    if (audio !== undefined) {
+      const button = keyToButtonMap[keyCode];
+      audio.play();
+      const targetStyle = "solid yellow 8px";
+      const prevBorder = button.style.border;
+      // button.classList.add("playing")
+      if (prevBorder.length === 0)
+      {
+        button.style.border = targetStyle;
+        setTimeout(() => button.style.border = prevBorder, 100);
+      }
+    }
+  }
 
+  document.querySelectorAll("audio[data-key]").forEach(node => {
+    keyToAudioMap[node.attributes["data-key"].value] = node;
+  });
+  document.querySelectorAll(".key").forEach(node => {
+    keyToButtonMap[node.attributes["data-key"].value] = node;
+  })
+  document.addEventListener("keydown", e => {
+    playCode(e.keyCode);
+  });
 </script>
 
 
